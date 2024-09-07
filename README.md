@@ -9,8 +9,15 @@
 ## 🧐 About
 The Udacity Travel App project is a web development application designed to help users explore and plan their trips. The project involves:
 
+### Example Screenshots
+
+**App Interface:**
 ![App Screenshot](https://github.com/fatimarajab12/travel-app/raw/main/Screenshot%202024-09-07%20200805.png)  
 *Example of the app interface.*
+
+**Date Input Alert:**
+![Date Input Alert](https://github.com/fatimarajab12/travel-app/raw/main/Screenshot%202024-09-07%20201021.png)  
+*Alert prompting users to enter a date.*
 
 - **Planning and Design:** Defining project requirements, creating mockups, and designing the UI/UX.
 - **Front-end Development:** Implementing visual and interactive components using HTML, CSS, and JavaScript.
