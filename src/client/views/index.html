@@ -19,34 +19,72 @@
     rel="stylesheet" />
 
   <title>Travel App</title>
+
+  <!-- Custom CSS for responsiveness -->
+  <style>
+    @media (max-width: 576px) {
+      h1.site-title {
+        font-size: 24px;
+      }
+      
+      .input-group, input[type="date"] {
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .flight_data p {
+        font-size: 14px;
+      }
+    }
+    .cityPic {
+  width: 100%; /* Make the container responsive */
+  max-width: 600px; /* Limit max width for larger screens */
+  margin: 0 auto; /* Center the container */
+  padding: 10px; /* Optional padding */
+}
+
+.cityPic img {
+  width: 100%; /* Make the image take the full width of the container */
+  height: auto; /* Maintain aspect ratio */
+}
+
+@media (max-width: 576px) {
+  .cityPic {
+    max-width: 100%; /* Ensure full width on smaller screens */
+    padding: 5px; /* Adjust padding for smaller screens */
+  }
+}
+
+  </style>
 </head>
+
 <body>
-  <div class="container flex-column d-flex justify-content-center align-items-center text-center py-3" width="100">
+  <div class="container flex-column d-flex justify-content-center align-items-center text-center py-3">
     <header class="site-header align-self-lg-start mb-5">
-      <h1 class="site-title">Plan Your Dream Vacation with Us????
-      </h1>
+      <h1 class="site-title">Plan Your Dream Vacation with Us</h1>
     </header>
     <div id="form_row" class="row flex-column justify-content-center align-items-center mt-5">
-      <div class="col">
+      <div class="col-12 col-md-8">
         <!--  -->
         <form onsubmit="return Client.handleSubmit(event)" method="POST">
           <div class="input-group">
             <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
             <input type="text" name="city" id="city" class="form-control form-control-lg"
-              placeholder="Entry your Destination" aria-label="City" aria-describedby="City" />
+              placeholder="Enter your Destination" aria-label="City" aria-describedby="City" />
           </div>
-          <div id="city_error" class="  mt-2 form-text text-start py-2" role="alert">
-
-          </div>
+          <div id="city_error" class="mt-2 form-text text-start py-2" role="alert"></div>
           <div class="mt-4">
             <input type="date" name="date" class="form-control form-control-lg" id="flightDate" />
           </div>
-          <div id="date_error" class="  mt-2 form-text text-start py-2" role="alert">
-
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg mt-4">
-            Submit
-          </button>
+          <div id="date_error" class="mt-2 form-text text-start py-2" role="alert"></div>
+          <button type="submit" class="btn btn-primary btn-lg mt-4">Submit</button>
         </form>
         <!--  -->
       </div>

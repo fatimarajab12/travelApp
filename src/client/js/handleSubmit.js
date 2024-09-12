@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 const form = document.querySelector("form");
 const dateInp = document.querySelector("#flightDate");
 const cityInp = document.querySelector("#city");
+ 
 
 const handleSubmit = async (e) => {
     e.preventDefault();

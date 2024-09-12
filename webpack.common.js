@@ -1,57 +1,60 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-    entry: ['./src/client/index.js'],
+    entry: ['./src/client/index.js'], // Entry point for the application
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-        clean: true,
+        filename: 'bundle.js', // Output filename
+        path: path.resolve(__dirname, 'dist'), // Output directory
+        clean: true, // Clean output directory before each build
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
+                test: /\.js$/, // Apply Babel loader to JavaScript files
+                exclude: /node_modules/, // Exclude node_modules directory
                 use: {
-                    loader: 'babel-loader',
+                    loader: 'babel-loader', // Use Babel to transpile JavaScript
                     options: {
-                        presets: ['@babel/preset-env'],
+                        presets: ['@babel/preset-env'], // Use the preset-env for modern JavaScript
                     },
                 },
             },
             {
-                test: /\.s[ac]ss$/i,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                test: /\.s[ac]ss$/i, // Apply loaders to SCSS and SASS files
+                use: [
+                    'style-loader', // Inject CSS into the DOM
+                    'css-loader', // Translate CSS into CommonJS
+                    'sass-loader', // Compile SCSS/SASS to CSS
+                ],
             },
-        ],
-    },
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new TerserPlugin(),
-            new CssMinimizerPlugin(),
+            {
+                test: /\.css$/i, // Apply loaders to CSS files
+                use: [
+                    'style-loader', 
+                    'css-loader'
+                ]
+            },
         ],
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/client/views/index.html',
-            filename: 'index.html',
+            template: './src/client/views/index.html', // HTML template for the build
+            filename: 'index.html', // Output filename for HTML
         }),
         new CleanWebpackPlugin({
-            dry: false,
-            verbose: true,
-            cleanStaleWebpackAssets: true,
-            protectWebpackAssets: false,
+            dry: false, // Don't use dry mode
+            verbose: true, // Log cleaned files
+            cleanStaleWebpackAssets: true, // Clean up old assets
+            protectWebpackAssets: false, // Don't protect existing assets from being cleaned
         }),
     ],
-    devServer: {
-        static: path.join(__dirname, 'dist'),
-        compress: true,
-        port: 9000,
-    },
+    resolve: {
+        fallback: {
+            path: require.resolve("path-browserify"),
+            os: require.resolve("os-browserify/browser"),
+            crypto: require.resolve("crypto-browserify")
+        }
+    }
 };

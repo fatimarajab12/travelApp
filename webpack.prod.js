@@ -1,9 +1,10 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin"),
-    TerserPlugin = require("terser-webpack-plugin"),
-    path = require("path"),
-    common = require("./webpack.common.js");
-    const { merge } = require("webpack-merge"),
-    CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const path = require("path");
+const common = require("./webpack.common.js");
+const { merge } = require("webpack-merge");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const { GenerateSW } = require("workbox-webpack-plugin");
 
 module.exports = merge(common, {
     mode: "production",
@@ -12,12 +13,23 @@ module.exports = merge(common, {
         rules: [
             {
                 test: /\.s[ac]ss$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+                use: [
+                    MiniCssExtractPlugin.loader, // Extract CSS into separate file
+                    "css-loader", // Translates CSS into CommonJS
+                    "sass-loader" // Compiles Sass to CSS
+                ],
             },
+            {
+                test: /\.css$/i, // Handle CSS files
+                use: [
+                    MiniCssExtractPlugin.loader, 
+                    "css-loader"
+                ]
+            }
         ]
     },
     output: {
-        filename: 'bundle.[contenthash].js',
+        filename: 'bundle.[contenthash].js', // Add contenthash for cache busting
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'var',
         library: 'Client',
@@ -26,15 +38,30 @@ module.exports = merge(common, {
     optimization: {
         minimize: true,
         minimizer: [
-            // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-            // `...`,
-            new CssMinimizerPlugin(),
-            new TerserPlugin()
+            new CssMinimizerPlugin(), // Minimize CSS
+            new TerserPlugin() // Minimize JavaScript
         ],
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'style.[contenthash].css'
+            filename: 'style.[contenthash].css' // Add contenthash for cache busting
+        }),
+        new GenerateSW({
+            clientsClaim: true,
+            skipWaiting: true,
+            runtimeCaching: [
+                {
+                    urlPattern: /\.(?:js|css|html|png|jpg|jpeg|gif|svg)$/,
+                    handler: 'NetworkFirst',
+                    options: {
+                        cacheName: 'assets',
+                        expiration: {
+                            maxEntries: 50,
+                            maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+                        },
+                    },
+                },
+            ],
         })
     ]
-})
+});

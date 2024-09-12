@@ -68,7 +68,7 @@ app.post("/getCityPic", async (req, res) => {
 
     // Correct destructuring of 'city_name' from req.body
     const { city_name } = req.body;
-    console.log(city_name, "server.js");  // Should log the city name sent from the client
+    // console.log(city_name, "server.js");  // Should log the city name sent from the client
 
     if (!city_name) {
         return res.status(400).send({ error: "City name is required" });
