@@ -12,15 +12,15 @@ The Udacity Travel App project is a web development application designed to help
 ### Example Screenshots
 
 **App Interface:**
-![App Screenshot](https://github.com/fatimarajab12/travel-app/raw/main/Screenshot%202024-09-07%20200805.png)  
+![App Screenshot](https://github.com/fatimarajab12/travelApp/raw/main/Screenshot%202024-09-07%20200805.png)  
 *Example of the app interface.*
 
 **Date Input Alert:**
-![Date Input Alert](https://github.com/fatimarajab12/travel-app/raw/main/Screenshot%202024-09-07%20201021.png)  
+![Date Input Alert](https://github.com/fatimarajab12/travelApp/raw/main/Screenshot%202024-09-07%20201021.png)  
 *Alert prompting users to enter a date.*
 
 **City Input Alert:**
-![City Input Alert](https://github.com/fatimarajab12/travel-app/raw/main/Screenshot%202024-09-07%20201123.png)  
+![City Input Alert](https://github.com/fatimarajab12/travelApp/raw/main/Screenshot%202024-09-07%20201123.png)  
 *Alert prompting users to enter a city.*
 
 **Current Time Input Alert:**
