@@ -51,6 +51,7 @@ const handleSubmit = async (e) => {
     }
 
     const Weather = await getWeather(lat, lng , Rdays);
+   
     const pic = await getCityPic(name);
     console.log("Pic", pic);
     
