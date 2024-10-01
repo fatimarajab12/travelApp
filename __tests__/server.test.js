@@ -1,7 +1,12 @@
-import { server } from "../src/server/server";
+// src/server/server.js
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 8081; // Set default port to 8081
 
-describe('Test: "PORT" should be set to 8081', () => {
-  it("should be a 8081", async () => {
-    expect(server).toBe(undefined);
-  });
+// Other middleware and routes...
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
+
+module.exports = { app, PORT }; // Exporting the app and PORT

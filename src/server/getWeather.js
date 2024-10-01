@@ -1,51 +1,60 @@
-const axios = require('axios'); 
+const axios = require('axios');
 
-const getWeather = async (lat, lng, Rdays, key) => {
+// Helper function to construct the Weatherbit API URL
+const buildWeatherbitURL = (latitude, longitude, requestedDays, apiKey) => {
+    const baseURL = 'https://api.weatherbit.io/v2.0';
+    const endpoint = requestedDays > 7 
+        ? `/forecast/daily?lat=${latitude}&lon=${longitude}&units=M&days=${requestedDays}&key=${apiKey}` 
+        : `/current?lat=${latitude}&lon=${longitude}&units=M&key=${apiKey}`;
     
-    if (Rdays < 0) {
-        return {
-            message: "Date cannot be in the past",
-            error: true
-        };
+    return `${baseURL}${endpoint}`; // Return the full API URL
+};
+
+// Main function to get weather data
+const getWeather = async (latitude, longitude, requestedDays, apiKey) => {
+    
+    // Validate the requested days
+    if (requestedDays < 0) {
+        return { message: "Invalid date: cannot fetch weather for the past.", error: true };
     }
 
-    if (Rdays > 0 && Rdays <= 7) {
-        // Request current weather data
-        const { data } = await axios.get(`https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&units=M&key=${key}`);
-<<<<<<< HEAD
-        const { weather, temp } = data.data[data.data.length - 1];
-        const { description } = weather;
-        return { description, temp };
-    } 
+    const apiURL = buildWeatherbitURL(latitude, longitude, requestedDays, apiKey); // Build the API URL
 
-    if (Rdays > 7) {
-        // Request weather forecast data
-        const { data } = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&units=M&days=${Rdays}&key=${key}`);
-        const { weather, temp, app_max_temp, app_min_temp } = data.data[data.data.length - 1];
-        const { description } = weather;
-        return { description, temp, app_max_temp, app_min_temp };
+    try {
+        const { data } = await axios.get(apiURL); // Make a GET request to the Weatherbit API
+        console.log('API Response:', data); // Log the API response for debugging
+
+        // Extract the relevant weather details
+        const weatherDetails = data?.data?.[data.data.length - 1];
+
+        // Check if weather details are available
+        if (!weatherDetails) {
+            return { message: "Weather details not available", error: true };
+        }
+
+        // Prepare the weather data object
+        const weatherData = {
+            description: weatherDetails.weather?.description || "No description available",
+            temp: weatherDetails.temp,
+        };
+
+        // Add additional temperature details for forecasts longer than 7 days
+        if (requestedDays > 7) {
+            weatherData.app_max_temp = weatherDetails.app_max_temp;
+            weatherData.app_min_temp = weatherDetails.app_min_temp;
+        }
+
+        return weatherData; // Return the collected weather data
+
+    } catch (error) {
+        // Handle errors based on the response
+        const errorMessage = error.response
+            ? `Error: ${error.response.status} - ${error.response.data}`
+            : `Error fetching weather data: ${error.message}`;
+        
+        return { message: errorMessage, error: true };
     }
 };
-=======
-       
-        const {weather , temp} = data.data[data.data.length -1];
-        const {description} = weather;
-        const weather_data = {description, temp}
-        // console.log(weather_data);
-       
-        return weather_data
-        } 
-        else if (Rdays > 7){
-            const {data} = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&units=M&days=${Rdays}&key=${key}`)
-            // console.log("******************************************************");
-            const {weather , temp, app_max_temp, app_min_temp} = data.data[data.data.length -1];
-            const {description} = weather;
-            const weather_data = {description, temp, app_max_temp, app_min_temp}
-            // console.log(weather_data);
-           
-            return weather_data
-        }
-}
->>>>>>> 8cc579ab937eda461c407abeef3e0248d69a7ee6
 
+// Export the getWeather function for use in other modules
 module.exports = { getWeather };
